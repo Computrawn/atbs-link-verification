@@ -24,6 +24,7 @@ def soup_urls(site_html):
 
 
 def check_save_urls(urls):
+    """Checks status of url and scrapes html if result is 200."""
     for index, url in enumerate(urls):
         url_name = f"Page_{index + 1}"
         res = requests.get(url, timeout=60.0)
