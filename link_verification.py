@@ -1,9 +1,17 @@
-#! python3
+#!/usr/bin/env python3
 # link_verification.py — An exercise in web scraping.
-# For more information, see project_details.txt.
+# For more information, see README.md
 
 import bs4
 import requests
+import logging
+
+logging.basicConfig(
+    level=logging.DEBUG,
+    filename="logging.txt",
+    format="%(asctime)s -  %(levelname)s -  %(message)s",
+)
+logging.disable(logging.CRITICAL)  # Note out to enable logging.
 
 
 def make_soup(site):
@@ -18,6 +26,7 @@ def soup_urls(site_html):
     """Parse and extract all href links to urls list."""
     a_tags = site_html.find_all("a")
     urls = [a_tag["href"] for a_tag in a_tags]
+    logging.info(urls)
     return urls
 
 
@@ -36,7 +45,12 @@ def check_save_urls(urls):
             print(f"Error {res.status_code} on {url}.")
 
 
-site = input("Please enter url here: ")
-site_html = make_soup(site)
-urls = soup_urls(site_html)
-check_save_urls(urls)
+def main():
+    site = input("Please enter url here: ")
+    site_html = make_soup(site)
+    urls = soup_urls(site_html)
+    check_save_urls(urls)
+
+
+if __name__ == "__main__":
+    main()
