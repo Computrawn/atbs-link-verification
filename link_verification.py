@@ -11,7 +11,7 @@ logging.basicConfig(
     filename="logging.txt",
     format="%(asctime)s -  %(levelname)s -  %(message)s",
 )
-logging.disable(logging.CRITICAL)  # Note out to enable logging.
+# logging.disable(logging.CRITICAL)  # Note out to enable logging.
 
 
 def make_soup(site):
@@ -24,9 +24,8 @@ def make_soup(site):
 
 def soup_urls(site_html):
     """Parse and extract all href links to urls list."""
-    a_tags = site_html.find_all("a")
-    urls = [a_tag["href"] for a_tag in a_tags]
-    logging.info(urls)
+    a_tags = [a_tag.get("href") for a_tag in site_html.find_all("a")]
+    urls = [a_tag for a_tag in a_tags if a_tag[:4] == "http"]
     return urls
 
 
