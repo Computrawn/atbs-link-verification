@@ -5,8 +5,6 @@
 import bs4
 import requests
 
-urls = []
-
 
 def make_soup(site):
     """Process website into bs4 file."""
@@ -19,8 +17,8 @@ def make_soup(site):
 def soup_urls(site_html):
     """Parse and extract all href links to urls list."""
     a_tags = site_html.find_all("a")
-    for a_tag in a_tags:
-        urls.append(a_tag["href"])
+    urls = [a_tag["href"] for a_tag in a_tags]
+    return urls
 
 
 def check_save_urls(urls):
@@ -40,5 +38,5 @@ def check_save_urls(urls):
 
 site = input("Please enter url here: ")
 site_html = make_soup(site)
-soup_urls(site_html)
+urls = soup_urls(site_html)
 check_save_urls(urls)
