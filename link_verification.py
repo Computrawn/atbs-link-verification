@@ -2,7 +2,7 @@
 # link_verification.py — An exercise in web scraping.
 # For more information, see README.md
 
-import bs4
+from bs4 import BeautifulSoup
 import requests
 import logging
 
@@ -14,22 +14,22 @@ logging.basicConfig(
 # logging.disable(logging.CRITICAL)  # Note out to enable logging.
 
 
-def make_soup(site):
+def make_soup(site: str) -> BeautifulSoup:
     """Process website into bs4 file."""
     res = requests.get(site, timeout=60.0)
     res.raise_for_status()
-    the_soup = bs4.BeautifulSoup(res.text, "lxml")
+    the_soup = BeautifulSoup(res.text, "lxml")
     return the_soup
 
 
-def soup_urls(site_html):
-    """Parse and extract all href links to urls list."""
+def soup_urls(site_html: BeautifulSoup) -> list[str]:
+    """Extract all href links to urls list."""
     a_tags = [a_tag.get("href") for a_tag in site_html.find_all("a")]
     urls = [a_tag for a_tag in a_tags if a_tag[:4] == "http"]
     return urls
 
 
-def check_save_urls(urls):
+def check_save_urls(urls: list[str]) -> None:
     """Checks status of url and scrapes html if result is 200."""
     for index, url in enumerate(urls):
         url_name = f"Page_{index + 1}"
@@ -44,7 +44,7 @@ def check_save_urls(urls):
             print(f"Error {res.status_code} on {url}.")
 
 
-def main():
+def main() -> None:
     site = input("Please enter url here: ")
     site_html = make_soup(site)
     urls = soup_urls(site_html)
